@@ -15,31 +15,31 @@ public class TurnTest {
   }
 
   @Test
-  public void equals_returnsTrueIfTurnsHaveSameNameAndMusic() {
-    Turn newTurn = new Turn("yellow");
-    Turn newTurn2 = new Turn("yellow");
+  public void equals_returnsTrueIfTurnsHaveSameId() {
+    Turn newTurn = new Turn();
+    Turn newTurn2 = new Turn();
     assertTrue(newTurn.equals(newTurn2));
   }
 
   @Test
   public void save_savesTurnToDatabase() {
-    Turn newTurn = new Turn("yellow");
+    Turn newTurn = new Turn();
     newTurn.save();
     assertTrue(Turn.all().get(0).equals(newTurn));
   }
 
   @Test
   public void save_savesTurnIdToDatabase() {
-    Turn newTurn = new Turn("yellow");
+    Turn newTurn = new Turn();
     newTurn.save();
     assertEquals(Turn.all().get(0).getId(),newTurn.getId());
   }
 
   @Test
   public void find_returnsTurnBasedOnId() {
-    Turn newTurn = new Turn("yellow");
+    Turn newTurn = new Turn();
     newTurn.save();
-    Turn newTurn2 = new Turn("blue");
+    Turn newTurn2 = new Turn();
     newTurn2.save();
     assertTrue(Turn.find(newTurn.getId()).equals(newTurn));
     assertTrue(Turn.find(newTurn2.getId()).equals(newTurn2));
@@ -47,22 +47,61 @@ public class TurnTest {
 
   @Test
   public void delete_removesTurnFromDatabase() {
-    Turn newTurn = new Turn("yellow");
+    Turn newTurn = new Turn();
     newTurn.save();
     newTurn.delete();
     assertEquals(Turn.all().size(), 0);
   }
 
   @Test
-  public void deleteUserGuess_removesUserTurnFromDatabase() {
-    Turn newTurn = new Turn("yellow");
+  public void update_updatesUserGuess() {
+    Turn newTurn = new Turn();
     newTurn.save();
     newTurn.update("yellow");
-    Turn newTurn2 = new Turn("blue");
+    assertTrue(Turn.find(newTurn.getId()).getUserTurn().equals("yellow"));
+  }
+
+  @Test
+  public void deleteUserGuess_removesUserTurnFromDatabase() {
+    Turn newTurn = new Turn();
+    newTurn.save();
+    newTurn.update("yellow");
+    Turn newTurn2 = new Turn();
     newTurn2.save();
     newTurn2.update("blue");
     newTurn.deleteUserGuess();
     assertEquals(newTurn.getUserTurn(), null);
     assertEquals(newTurn2.getUserTurn(), null);
+  }
+
+  @Test
+  public void isFull_reutrnsTrueIfUserHasGuessedAppropriateNumberOfTimes() {
+    Turn newTurn = new Turn();
+    newTurn.save();
+    Turn newTurn2 = new Turn();
+    newTurn2.save();
+    newTurn.update("yellow");
+    newTurn2.update("blue");
+    assertTrue(Turn.isFull());
+  }
+
+  @Test
+  public void getCurrentTurn_returnsFirstCompTurnInCompTurnSequence() {
+    Turn newTurn = new Turn();
+    newTurn.save();
+    Turn newTurn2 = new Turn();
+    newTurn2.save();
+    newTurn.update("blue");
+    assertTrue(Turn.getCurrentTurn().equals(newTurn2));
+  }
+
+  @Test
+  public void getNextUnshownTurn_returnNextTurnThatHasNotBeenShown() {
+    Turn newTurn = new Turn();
+    newTurn.save();
+    Turn newTurn2 = new Turn();
+    newTurn2.save();
+    newTurn.updateShownStatus();
+    assertTrue(Turn.getNextUnshownTurn().equals(newTurn2));
   }
 }
