@@ -65,4 +65,13 @@ public class User {
       con.createQuery(sql).addParameter("id", id).executeUpdate();
     }
   }
+
+  public String passwordHint() {
+    String puzzlePassword = password;
+    char[] vowels = {'A', 'E', 'I', 'O', 'U', 'a', 'e', 'i', 'o', 'u'};
+    for(char vowel : vowels) {
+      puzzlePassword = puzzlePassword.replace(vowel, '-');
+    }
+    return puzzlePassword;
+  }
 }

@@ -52,4 +52,11 @@ public class UserTest {
     newUser.delete();
     assertEquals(User.all().size(), 0);
   }
+
+  @Test
+  public void passwordHint_returnsPasswordWithDashesInPlaceOfVowels() {
+    User newUser = new User("Matt", "cat", "admin");
+    newUser.save();
+    assertEquals(newUser.passwordHint(), "c-t");
+  }
 }
