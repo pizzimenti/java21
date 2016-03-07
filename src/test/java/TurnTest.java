@@ -104,4 +104,15 @@ public class TurnTest {
     newTurn.updateShownStatus();
     assertTrue(Turn.getNextUnshownTurn().equals(newTurn2));
   }
+
+  @Test
+  public void allShown_returnsTrueIfAllTurnsHaveBeenShown() {
+    Turn newTurn = new Turn();
+    newTurn.save();
+    Turn newTurn2 = new Turn();
+    newTurn2.save();
+    newTurn.updateShownStatus();
+    newTurn2.updateShownStatus();
+    assertTrue(Turn.allShown());
+  }
 }
