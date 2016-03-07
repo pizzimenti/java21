@@ -15,15 +15,15 @@ public class App {
       return new ModelAndView (model, layout);
     }, new VelocityTemplateEngine());
 
-    get("/index1", (request, response) -> {
+    get("/replay", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
-      model.put("template", "templates/index1.vtl");
-      return new ModelAndView (model, layout);
-    }, new VelocityTemplateEngine());
+      Turn newTurn = Turn.all().get(0);
+      response.redirect("/play");
+      return null;
 
-    get("/index2", (request, response) -> {
+    get("/red", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
-      model.put("template", "templates/index2.vtl");
+      model.put("template", "templates/red.vtl");
       return new ModelAndView (model, layout);
     }, new VelocityTemplateEngine());
 
