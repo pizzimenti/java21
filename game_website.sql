@@ -35,8 +35,8 @@ SET default_with_oids = false;
 
 CREATE TABLE turns (
     id integer NOT NULL,
-    comp_turn integer,
-    user_turn integer
+    comp_turn character varying,
+    user_turn character varying
 );
 
 

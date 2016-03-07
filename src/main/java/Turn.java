@@ -3,18 +3,23 @@ import org.sql2o.*;
 
 public class Turn {
   private int id;
-  private String generatedColor;
+  private String comp_turn;
+  private String user_turn;
 
-  public Turn(String generatedColor) {
-    this.generatedColor = generatedColor;
+  public Turn(String comp_turn) {
+    this.comp_turn = comp_turn;
   }
 
-  public getId() {
+  public int getId() {
     return id;
   }
 
-  public getGeneratedColor() {
-    return generatedColor;
+  public String getGeneratedColor() {
+    return comp_turn;
+  }
+
+  public String getUserTurn() {
+    return user_turn;
   }
 
   public static List<Turn> all() {
@@ -30,14 +35,14 @@ public class Turn {
       return false;
     } else {
       Turn newTurn = (Turn) otherTurn;
-      return newTurn.getId().equals(id) && newTurn.getGeneratedColor().equals(getGeneratedColor);
+      return newTurn.getId() == (id) && newTurn.getGeneratedColor().equals(comp_turn);
     }
   }
 
   public void save() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "INSERT INTO turns (generatedColor) VALUES (:generatedColor)";
-      this.id = (int) con.createQuery(sql, true).addParameter("generatedColor", generatedColor).executeUpdate().getKey();
+      String sql = "INSERT INTO turns (comp_turn) VALUES (:comp_turn)";
+      this.id = (int) con.createQuery(sql, true).addParameter("comp_turn", comp_turn).executeUpdate().getKey();
     }
   }
 
@@ -56,14 +61,14 @@ public class Turn {
 
   public void deleteUserGuess() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "UPDATE turns SET user_guess = null";
+      String sql = "UPDATE turns SET user_turn = null";
       con.createQuery(sql).executeUpdate();
     }
   }
 
   public void update(String user_guess) {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "UPDATE turns SET user_guess = :user_guess WHERE id = :id";
+      String sql = "UPDATE turns SET user_turn = :user_guess WHERE id = :id";
       con.createQuery(sql).addParameter("id", id).addParameter("user_guess", user_guess).executeUpdate();
     }
   }

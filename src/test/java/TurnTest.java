@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 public class TurnTest {
 
   @Rule
-  DatabaseRule database = new DatabaseRule();
+  public DatabaseRule database = new DatabaseRule();
 
   @Test
   public void all_emptyAtFirst() {
@@ -54,15 +54,15 @@ public class TurnTest {
   }
 
   @Test
-  public void deleteUserGuess_removesUserGuessesFromDatabase() {
+  public void deleteUserGuess_removesUserTurnFromDatabase() {
     Turn newTurn = new Turn("yellow");
     newTurn.save();
     newTurn.update("yellow");
     Turn newTurn2 = new Turn("blue");
     newTurn2.save();
-    newTurn2.update("blue")
+    newTurn2.update("blue");
     newTurn.deleteUserGuess();
-    assertEquals(newTurn.getUserGuess(), null);
-    assertEquals(newTurn2.getUserGuess(), null);
+    assertEquals(newTurn.getUserTurn(), null);
+    assertEquals(newTurn2.getUserTurn(), null);
   }
 }
