@@ -78,6 +78,7 @@ public class Turn {
   }
 
   public void update(String user_guess) {
+    this.user_turn = user_guess;
     try(Connection con = DB.sql2o.open()) {
       String sql = "UPDATE turns SET user_turn = :user_guess WHERE id = :id";
       con.createQuery(sql).addParameter("id", id).addParameter("user_guess", user_guess).executeUpdate();

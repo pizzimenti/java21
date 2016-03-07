@@ -48,12 +48,6 @@ public class App {
       return new ModelAndView (model, layout);
     }, new VelocityTemplateEngine());
 
-    get("/index4", (request, response) -> {
-      HashMap<String, Object> model = new HashMap<String, Object>();
-      model.put("template", "templates/index4.vtl");
-      return new ModelAndView (model, layout);
-    }, new VelocityTemplateEngine());
-
     get("/yellow", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       model.put("template", "templates/yellow.vtl");
@@ -72,15 +66,66 @@ public class App {
       return new ModelAndView (model, layout);
     }, new VelocityTemplateEngine());
 
+    get("/play", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      if (Turn.isFull()){
+        response.redirect("/userwins");
+        return null;
+      }
+      model.put("template", "templates/play.vtl");
+      return new ModelAndView (model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/play", (request, response) -> {
+      if (!Turn.isFull()) {
+        Turn currentTurn = Turn.getCurrentTurn();
+        String userGuess = request.queryParams("color");
+        currentTurn.update(userGuess);
+        if (currentTurn.checkGuess()){
+          response.redirect("/play");
+          return null;
+        }
+        response.redirect("/gameover");
+        return null;
+      }
+      response.redirect("/userwins");
+      return null;
+    });
+
+    // get("/next-turn", (request, response) -> {
+    //   HashMap<String, Object> model = new HashMap<String, Object>();
+    //   model.put("template", "templates/play.vtl");
+    //   return new ModelAndView (model, layout);
+    // }, new VelocityTemplateEngine());
+
+    //
+    // post("/play", (request, response) -> {
+    //   if (Turn.isFull() == false) {
+    //     Turn compTurn = Turn.getCurrentTurn();
+    //
+    //
+    //     String color = request.params(":color");
+    //     if(color.equals("red")) {
+    //       response.redirect("/red");
+    //       return null;
+    //     } else if(color.equals("yellow")) {
+    //       response.redirect("/yellow");
+    //       return null;
+    //     } else if(color.equals("green")) {
+    //       response.redirect("/green");
+    //       return null;
+    //     } else if(color.equals("blue")) {
+    //       response.redirect("/blue");
+    //       return null;
+    //     } else {
+    //       response.redirect("/error-replay");
+    //       return null;
+    //     }
+    //   } else {
+    //     response.redirect("/won");
+    //     return null;
+    //     }
+    // });
+
   } //end of main
-
-  // public static void timer() {
-  //
-  //   long startTime = System.currentTimeMillis(); //fetch starting time
-  //   while(false||(System.currentTimeMillis()-startTime)<5000)
-  //   {
-  //       get("/")
-  //   }
-  // }
-
 }
