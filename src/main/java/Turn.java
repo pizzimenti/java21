@@ -52,7 +52,7 @@ public class Turn {
 
   public void save() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "INSERT INTO turns (comp_turn) VALUES (:comp_turn)";
+      String sql = "INSERT INTO turns (comp_turn, shown) VALUES (:comp_turn, false)";
       this.id = (int) con.createQuery(sql, true).addParameter("comp_turn", comp_turn).executeUpdate().getKey();
     }
   }
@@ -137,7 +137,7 @@ public class Turn {
     }
   }
 
-  public void resetShownStatus() {
+  public static void resetShownStatus() {
     try(Connection con = DB.sql2o.open()) {
       String sql = "UPDATE turns SET shown = false";
       con.createQuery(sql).executeUpdate();
