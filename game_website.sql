@@ -35,8 +35,9 @@ SET default_with_oids = false;
 
 CREATE TABLE turns (
     id integer NOT NULL,
-    comp_turn integer,
-    user_turn integer
+    comp_turn character varying,
+    user_turn character varying,
+    shown boolean
 );
 
 
@@ -74,7 +75,20 @@ ALTER TABLE ONLY turns ALTER COLUMN id SET DEFAULT nextval('turns_id_seq'::regcl
 -- Data for Name: turns; Type: TABLE DATA; Schema: public; Owner: Guest
 --
 
-COPY turns (id, comp_turn, user_turn) FROM stdin;
+COPY turns (id, comp_turn, user_turn, shown) FROM stdin;
+29	red	\N	\N
+30	blue	\N	\N
+18	yellow	\N	\N
+19	blue	\N	\N
+20	blue	\N	\N
+21	red	\N	\N
+22	green	\N	\N
+24	red	\N	\N
+23	green	\N	t
+26	red	\N	\N
+25	red	\N	\N
+27	yellow	\N	\N
+28	blue	\N	\N
 \.
 
 
@@ -82,7 +96,7 @@ COPY turns (id, comp_turn, user_turn) FROM stdin;
 -- Name: turns_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('turns_id_seq', 1, false);
+SELECT pg_catalog.setval('turns_id_seq', 30, true);
 
 
 --
