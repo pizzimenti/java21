@@ -129,7 +129,7 @@ public class User {
     }
   }
 
-  public static List<User> getHighScores() {
+  public static List<User> getSimonHighScores() {
     try(Connection con = DB.sql2o.open()) {
       String sql = "SELECT * FROM users ORDER BY simon_high_score DESC LIMIT 10" ;
       return con.createQuery(sql).executeAndFetch(User.class);

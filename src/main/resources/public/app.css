@@ -42,3 +42,45 @@ body {
 .navbar-btn {
   margin-left: 8px;
 }
+
+span.text-content {
+  background: rgba(0,0,0,0.5);
+  color: white;
+  font-size: 40px;
+  cursor: pointer;
+  display: table;
+  height: 250px;
+  left: 17.8%;
+  position: absolute;
+  top: 18.5%;
+  width: 250px;
+  opacity: 0;
+  -webkit-transition: opacity 500ms;
+  -moz-transition: opacity 500ms;
+  -o-transition: opacity 500ms;
+  transition: opacity 500ms;
+}
+
+span.text-content span {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.image-wrapper:hover span.text-content {
+  opacity: 1;
+}
+
+ul.image-wrapper {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+ul.img-wrapper li {
+  display: inline-block;
+  height: 250px;
+  margin: 0 1em 1em 0;
+  position: relative;
+  width: 250px;
+}

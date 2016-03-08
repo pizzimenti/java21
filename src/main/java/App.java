@@ -66,7 +66,7 @@ public class App {
       Turn.delete();
       User user = request.session().attribute("user");
       model.put("user", user);
-      model.put("users", User.getHighScores());
+      model.put("users", User.getSimonHighScores());
       model.put("template", "templates/simonSays.vtl");
       return new ModelAndView (model, layout);
     }, new VelocityTemplateEngine());
@@ -78,7 +78,7 @@ public class App {
       Turn.deleteUserGuess();
       Double difficulty = Double.parseDouble(request.queryParams("difficulty")) * -1.0;
       request.session().attribute("time", difficulty);
-      Double diffMultiplierDouble = difficulty * 10.0;
+      Double diffMultiplierDouble = 1.0 / difficulty;
       Integer diffMultiplier = diffMultiplierDouble.intValue();
       request.session().attribute("diffMultiplier", diffMultiplier);
       Turn newTurn = new Turn();
@@ -270,6 +270,7 @@ public class App {
       model.put("currentScore", currentScore);
       model.put("highScore", userHighScore);
       model.put("user", user);
+      model.put("users", User.getSimonHighScores());
       model.put("template", "templates/gameover.vtl");
       return new ModelAndView (model, layout);
     }, new VelocityTemplateEngine());
