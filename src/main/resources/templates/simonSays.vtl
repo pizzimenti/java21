@@ -1,1 +1,11 @@
-<a href="/next-turn" class="btn btn-default">Begin Game</a>
+<div class="row">
+  <div class="col-md-4">
+    <form action="next-turn" method="post">
+      <div class="form-group">
+        <label for="difficulty">Select a difficulty level</label>
+        <input type="range" name="difficulty" min="-1.5" max="-0.1" step="0.1">
+      </div>
+      <button type="submit" class="btn btn-success">Go!</button>
+    </form>
+  </div>
+</div>

@@ -64,9 +64,22 @@ public class App {
     get("/simonSays", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       Turn.delete();
+      User user = request.session().attribute("user");
+      model.put("user", user);
       model.put("template", "templates/simonSays.vtl");
       return new ModelAndView (model, layout);
     }, new VelocityTemplateEngine());
+
+    post("/next-turn", (request, response) -> {
+      Turn.resetShownStatus();
+      Turn.deleteUserGuess();
+      Double difficulty = Double.parseDouble(request.queryParams("difficulty")) * -1.0;
+      request.session().attribute("time", difficulty);
+      Turn newTurn = new Turn();
+      newTurn.save();
+      response.redirect("/replay");
+      return null;
+      });
 
     get("/next-turn", (request, response) -> {
       Turn.resetShownStatus();
@@ -153,18 +166,40 @@ public class App {
 
     get("/yellow", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
+      User user = request.session().attribute("user");
+      Double time = request.session().attribute("time");
+      model.put("time", time);
+      model.put("user", user);
       model.put("template", "templates/yellow.vtl");
+      return new ModelAndView (model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/red", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      User user = request.session().attribute("user");
+      Double time = request.session().attribute("time");
+      model.put("time", time);
+      model.put("user", user);
+      model.put("template", "templates/red.vtl");
       return new ModelAndView (model, layout);
     }, new VelocityTemplateEngine());
 
     get("/green", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
+      User user = request.session().attribute("user");
+      Double time = request.session().attribute("time");
+      model.put("time", time);
+      model.put("user", user);
       model.put("template", "templates/green.vtl");
       return new ModelAndView (model, layout);
     }, new VelocityTemplateEngine());
 
     get("/blue", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
+      User user = request.session().attribute("user");
+      Double time = request.session().attribute("time");
+      model.put("time", time);
+      model.put("user", user);
       model.put("template", "templates/blue.vtl");
       return new ModelAndView (model, layout);
     }, new VelocityTemplateEngine());
@@ -175,6 +210,8 @@ public class App {
         response.redirect("/next-turn");
         return null;
       }
+      User user = request.session().attribute("user");
+      model.put("user", user);
       model.put("template", "templates/play.vtl");
       return new ModelAndView (model, layout);
     }, new VelocityTemplateEngine());
@@ -197,6 +234,8 @@ public class App {
 
     get("/gameover", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
+      User user = request.session().attribute("user");
+      model.put("user", user);
       model.put("template", "templates/gameover.vtl");
       return new ModelAndView (model, layout);
     }, new VelocityTemplateEngine());
