@@ -66,6 +66,7 @@ public class App {
       Turn.delete();
       User user = request.session().attribute("user");
       model.put("user", user);
+      model.put("users", User.getHighScores());
       model.put("template", "templates/simonSays.vtl");
       return new ModelAndView (model, layout);
     }, new VelocityTemplateEngine());
@@ -259,8 +260,15 @@ public class App {
       HashMap<String, Object> model = new HashMap<String, Object>();
       User user = request.session().attribute("user");
       Integer currentScore = request.session().attribute("simonScore");
-      user.updateSimonScore(currentScore);
+      Integer userHighScore = user.getSimonHighScore();
+      if (currentScore > userHighScore) {
+        user.updateSimonScore(currentScore);
+        String congrats = "Congratulations you set a new record!";
+        model.put("congrats", congrats);
+      }
+      userHighScore = user.getSimonHighScore();
       model.put("currentScore", currentScore);
+      model.put("highScore", userHighScore);
       model.put("user", user);
       model.put("template", "templates/gameover.vtl");
       return new ModelAndView (model, layout);
