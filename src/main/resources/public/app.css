@@ -30,6 +30,15 @@ body {
   width: auto;
 }
 
+.color-btn {
+  width: 100%;
+  line-height: 20em;
+}
+
+.col-md-6 {
+  padding: 0;
+}
+
 .navbar-btn {
   margin-left: 8px;
 }
