@@ -12,8 +12,18 @@ public class App {
 
     get("/", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
+      Turn.delete();
       return new ModelAndView (model, layout);
     }, new VelocityTemplateEngine());
+
+    get("/next-turn", (request, response) -> {
+      Turn.resetShownStatus();
+      Turn.deleteUserGuess();
+      Turn newTurn = new Turn();
+      newTurn.save();
+      response.redirect("/replay");
+      return null;
+      });
 
     get("/replay", (request, response) -> {
       if (Turn.allShown() == false) {
@@ -69,7 +79,7 @@ public class App {
     get("/play", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       if (Turn.isFull()){
-        response.redirect("/userwins");
+        response.redirect("/next-turn");
         return null;
       }
       model.put("template", "templates/play.vtl");
@@ -88,44 +98,15 @@ public class App {
         response.redirect("/gameover");
         return null;
       }
-      response.redirect("/userwins");
+      response.redirect("/next-turn");
       return null;
     });
 
-    // get("/next-turn", (request, response) -> {
-    //   HashMap<String, Object> model = new HashMap<String, Object>();
-    //   model.put("template", "templates/play.vtl");
-    //   return new ModelAndView (model, layout);
-    // }, new VelocityTemplateEngine());
-
-    //
-    // post("/play", (request, response) -> {
-    //   if (Turn.isFull() == false) {
-    //     Turn compTurn = Turn.getCurrentTurn();
-    //
-    //
-    //     String color = request.params(":color");
-    //     if(color.equals("red")) {
-    //       response.redirect("/red");
-    //       return null;
-    //     } else if(color.equals("yellow")) {
-    //       response.redirect("/yellow");
-    //       return null;
-    //     } else if(color.equals("green")) {
-    //       response.redirect("/green");
-    //       return null;
-    //     } else if(color.equals("blue")) {
-    //       response.redirect("/blue");
-    //       return null;
-    //     } else {
-    //       response.redirect("/error-replay");
-    //       return null;
-    //     }
-    //   } else {
-    //     response.redirect("/won");
-    //     return null;
-    //     }
-    // });
+    get("/gameover", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      model.put("template", "templates/gameover.vtl");
+      return new ModelAndView (model, layout);
+    }, new VelocityTemplateEngine());
 
   } //end of main
-}
+} //end of app
