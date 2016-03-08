@@ -1,11 +1,16 @@
 <div class="row">
   <div class="col-md-4">
+  </div>
+  <div class="col-md-4">
+    <h1 class="gameHeaderText">Simon Says</h1>
+    <img src="/images/simon.jpg" alt="simon says" class="img-responsive center-block">
+    <br></br>
     <form action="next-turn" method="post">
       <div class="form-group">
         <label for="difficulty">Select a difficulty level</label>
         <input type="range" name="difficulty" min="-1.5" max="-0.1" step="0.1">
       </div>
-      <button type="submit" class="btn btn-success">Go!</button>
+      <button type="submit" class="btn btn-success simonButton">Go!</button>
     </form>
   </div>
 </div>
