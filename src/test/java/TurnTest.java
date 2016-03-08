@@ -69,9 +69,9 @@ public class TurnTest {
     Turn newTurn2 = new Turn();
     newTurn2.save();
     newTurn2.update("blue");
-    newTurn.deleteUserGuess();
-    assertEquals(newTurn.getUserTurn(), null);
-    assertEquals(newTurn2.getUserTurn(), null);
+    Turn.deleteUserGuess();
+    assertEquals(Turn.find(newTurn.getId()).getUserTurn(), null);
+    assertEquals(Turn.find(newTurn2.getId()).getUserTurn(), null);
   }
 
   @Test

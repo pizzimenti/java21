@@ -12,5 +12,11 @@
       </div>
       <button type="submit" class="btn btn-success simonButton">Go!</button>
     </form>
+    <h3 class="gameHeaderText">Current High Scores:</h3>
+    <ul>
+    #foreach($useer in $users)
+      <li>$useer.getName(): $useer.getSimonHighScore()</li>
+    #end
+    </ul>
   </div>
 </div>

@@ -8,12 +8,13 @@ public class User {
   private String permissions;
   private String passwordHint;
   private String profilepic;
-  private int simon_high_score = 0;
+  private int simon_high_score;
 
   public User(String name, String password, String permissions) {
     this.name = name;
     this.password = password;
     this.permissions = permissions;
+    this.simon_high_score = 0;
   }
 
   public int getId() {
@@ -63,7 +64,7 @@ public class User {
 
   public void save() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "INSERT INTO users (name, password, permissions) VALUES (:name, :password, :permissions)";
+      String sql = "INSERT INTO users (name, password, permissions, simon_high_score) VALUES (:name, :password, :permissions, 0)";
       this.id = (int) con.createQuery(sql, true).addParameter("name", name).addParameter("password", password).addParameter("permissions", permissions).executeUpdate().getKey();
     }
   }
@@ -125,6 +126,13 @@ public class User {
     try(Connection con = DB.sql2o.open()) {
       String sql = "UPDATE users SET password = :newPassword WHERE id = :id" ;
       con.createQuery(sql).addParameter("id", id).addParameter("newPassword", newPassword).executeUpdate();
+    }
+  }
+
+  public static List<User> getHighScores() {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "SELECT * FROM users ORDER BY simon_high_score DESC LIMIT 10" ;
+      return con.createQuery(sql).executeAndFetch(User.class);
     }
   }
 

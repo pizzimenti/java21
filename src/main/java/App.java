@@ -66,15 +66,21 @@ public class App {
       Turn.delete();
       User user = request.session().attribute("user");
       model.put("user", user);
+      model.put("users", User.getHighScores());
       model.put("template", "templates/simonSays.vtl");
       return new ModelAndView (model, layout);
     }, new VelocityTemplateEngine());
 
     post("/next-turn", (request, response) -> {
+      //score based on length of sequence, number of turns completed and difficulty multiplier
+      request.session().attribute("simonScore", 0);
       Turn.resetShownStatus();
       Turn.deleteUserGuess();
       Double difficulty = Double.parseDouble(request.queryParams("difficulty")) * -1.0;
       request.session().attribute("time", difficulty);
+      Double diffMultiplierDouble = difficulty * 10.0;
+      Integer diffMultiplier = diffMultiplierDouble.intValue();
+      request.session().attribute("diffMultiplier", diffMultiplier);
       Turn newTurn = new Turn();
       newTurn.save();
       response.redirect("/replay");
@@ -82,6 +88,12 @@ public class App {
       });
 
     get("/next-turn", (request, response) -> {
+      Integer turns = Turn.all().size();
+      Integer score = request.session().attribute("simonScore");
+      Integer diffMultiplier = request.session().attribute("diffMultiplier");
+      Integer addedScore = turns * diffMultiplier;
+      score += addedScore;
+      request.session().attribute("simonScore", score);
       Turn.resetShownStatus();
       Turn.deleteUserGuess();
       Turn newTurn = new Turn();
@@ -168,6 +180,8 @@ public class App {
       HashMap<String, Object> model = new HashMap<String, Object>();
       User user = request.session().attribute("user");
       Double time = request.session().attribute("time");
+      Integer currentScore = request.session().attribute("simonScore");
+      model.put("currentScore", currentScore);
       model.put("time", time);
       model.put("user", user);
       model.put("template", "templates/yellow.vtl");
@@ -178,6 +192,8 @@ public class App {
       HashMap<String, Object> model = new HashMap<String, Object>();
       User user = request.session().attribute("user");
       Double time = request.session().attribute("time");
+      Integer currentScore = request.session().attribute("simonScore");
+      model.put("currentScore", currentScore);
       model.put("time", time);
       model.put("user", user);
       model.put("template", "templates/red.vtl");
@@ -188,6 +204,8 @@ public class App {
       HashMap<String, Object> model = new HashMap<String, Object>();
       User user = request.session().attribute("user");
       Double time = request.session().attribute("time");
+      Integer currentScore = request.session().attribute("simonScore");
+      model.put("currentScore", currentScore);
       model.put("time", time);
       model.put("user", user);
       model.put("template", "templates/green.vtl");
@@ -198,6 +216,8 @@ public class App {
       HashMap<String, Object> model = new HashMap<String, Object>();
       User user = request.session().attribute("user");
       Double time = request.session().attribute("time");
+      Integer currentScore = request.session().attribute("simonScore");
+      model.put("currentScore", currentScore);
       model.put("time", time);
       model.put("user", user);
       model.put("template", "templates/blue.vtl");
@@ -211,6 +231,10 @@ public class App {
         return null;
       }
       User user = request.session().attribute("user");
+
+      Integer currentScore = request.session().attribute("simonScore");
+      System.out.println(currentScore);
+      model.put("currentScore", currentScore);
       model.put("user", user);
       model.put("template", "templates/play.vtl");
       return new ModelAndView (model, layout);
@@ -235,6 +259,16 @@ public class App {
     get("/gameover", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       User user = request.session().attribute("user");
+      Integer currentScore = request.session().attribute("simonScore");
+      Integer userHighScore = user.getSimonHighScore();
+      if (currentScore > userHighScore) {
+        user.updateSimonScore(currentScore);
+        String congrats = "Congratulations you set a new record!";
+        model.put("congrats", congrats);
+      }
+      userHighScore = user.getSimonHighScore();
+      model.put("currentScore", currentScore);
+      model.put("highScore", userHighScore);
       model.put("user", user);
       model.put("template", "templates/gameover.vtl");
       return new ModelAndView (model, layout);
