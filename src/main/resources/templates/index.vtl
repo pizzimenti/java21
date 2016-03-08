@@ -1,0 +1,28 @@
+<h1>Game Site</h1>
+
+#if($incorrectUsername)
+  <p>This username does not exist.</p>
+#end
+
+<h3>Login</h3>
+<form action="/checkPassword" method="post">
+  <div class="form-group">
+    <label for="name">Username</label>
+    <input type="text" name="name" id="name">
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password">
+  </div>
+  <button type="submit" class="btn btn-default">Login</button>
+</form>
+
+#if($incorrectPassword)
+  #if($user.getPasswordHint().length() > 0)
+    <p>Hint: $user.getPasswordHint()</p>
+  #else
+    <p>Incorrect Password</p>
+  #end
+#end
+
+<a href="/signUp">Sign Up</a>

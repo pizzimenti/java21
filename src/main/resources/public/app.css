@@ -1,0 +1,17 @@
+.gameHome {
+  max-height: 250px;
+  width: auto;
+}
+
+.gameHomeText {
+  text-align: center;
+}
+
+.playButton {
+  margin-left: 43%;
+}
+
+#profilePic {
+  max-height: 250px;
+  width: auto;
+}

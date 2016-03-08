@@ -1,0 +1,17 @@
+<h2>Welcome $user.getName()</h2>
+
+<img id="profilePic" src="$user.getProfilepic()" alt="you">
+<form action="/updateImage" method="post">
+  <label for="profilePic">Enter image url to update your profile picture</label>
+  <input type="text" name="profilePic" id="profilePic">
+  <button type="submit" class="btn btn-default">Add Picture</button>
+</form>
+<br></br>
+<p>Password: $user.getPassword()</p>
+<form action="/changePassword" method="post">
+  <label for="updatePassword">Enter new password</label>
+  <input type="text" name="updatePassword" id="updatePassword">
+  <button type="submit" class="btn btn-default">Change password</button>
+</form>
+<h3>High Scores</h3>
+<p>Simon Says: $user.getSimonHighScore()</p>

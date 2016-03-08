@@ -57,6 +57,6 @@ public class UserTest {
   public void passwordHint_returnsPasswordWithDashesInPlaceOfVowels() {
     User newUser = new User("Matt", "cat", "admin");
     newUser.save();
-    assertEquals(newUser.passwordHint(), "c-t");
+    assertEquals(newUser.passwordPuzzle(), "c-t");
   }
 }
