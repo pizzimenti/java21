@@ -16,6 +16,7 @@ public class App {
       return new ModelAndView (model, layout);
     }, new VelocityTemplateEngine());
 
+
     get("/takeTwo", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       boolean incorrectUsername = request.session().attribute("incorrectUsername");
@@ -58,6 +59,32 @@ public class App {
       request.session().attribute("user", null);
       response.redirect("/takeTwo");
       return null;
+
+    get("/replay", (request, response) -> {
+      if (Turn.allShown() == false) {
+        Turn unshownTurn = Turn.getNextUnshownTurn();
+        String color = unshownTurn.getGeneratedColor();
+        unshownTurn.updateShownStatus();
+        if(color.equals("red")) {
+          response.redirect("/red");
+          return null;
+        } else if(color.equals("yellow")) {
+          response.redirect("/yellow");
+          return null;
+        } else if(color.equals("green")) {
+          response.redirect("/green");
+          return null;
+        } else if(color.equals("blue")) {
+          response.redirect("/blue");
+          return null;
+        } else {
+          response.redirect("/error-replay");
+          return null;
+        }
+      } else {
+        response.redirect("/play");
+        return null;
+        }
     });
 
     post("/signedUp", (request, response) -> {
@@ -107,41 +134,33 @@ public class App {
       return null;
     });
 
-    // get("/replay", (request, response) -> {
-    //   HashMap<String, Object> model = new HashMap<String, Object>();
-    //   List<Turn> turns = Turn.all();
-    //   String color = newTurn.getGeneratedColor();
-    //   if(color.equals("red")) {
-    //     newTurn.updateShownStatus();
-    //     response.redirect("/red");
-    //     return null;
-    //   }
-    //   response.redirect("/play");
-    //   return null;
-    // });
-    //
-    // get("/red", (request, response) -> {
-    //   HashMap<String, Object> model = new HashMap<String, Object>();
-    //   model.put("template", "templates/red.vtl");
-    //   return new ModelAndView (model, layout);
-    // }, new VelocityTemplateEngine());
-    //
-    //
-    // get("/index4", (request, response) -> {
-    //   HashMap<String, Object> model = new HashMap<String, Object>();
-    //   model.put("template", "templates/index4.vtl");
-    //   return new ModelAndView (model, layout);
-    // }, new VelocityTemplateEngine());
+    get("/yellow", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      model.put("template", "templates/yellow.vtl");
+      return new ModelAndView (model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/green", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      model.put("template", "templates/green.vtl");
+      return new ModelAndView (model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/blue", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      model.put("template", "templates/blue.vtl");
+      return new ModelAndView (model, layout);
+    }, new VelocityTemplateEngine());
 
   } //end of main
 
-  // public static void timer() {
-  //
-  //   long startTime = System.currentTimeMillis(); //fetch starting time
-  //   while(false||(System.currentTimeMillis()-startTime)<5000)
-  //   {
-  //       get("/")
-  //   }
-  // }
+  public static void timer() {
+
+    long startTime = System.currentTimeMillis(); //fetch starting time
+    while(false||(System.currentTimeMillis()-startTime)<5000)
+    {
+        get("/")
+    }
+  }
 
 }
