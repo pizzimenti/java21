@@ -63,14 +63,14 @@ public class Turn {
       return con.createQuery(sql).addParameter("id", id).executeAndFetchFirst(Turn.class);    }
   }
 
-  public void delete() {
+  public static void delete() {
     try(Connection con = DB.sql2o.open()) {
       String sql = "DELETE FROM turns";
       con.createQuery(sql).executeUpdate();
     }
   }
 
-  public void deleteUserGuess() {
+  public static void deleteUserGuess() {
     try(Connection con = DB.sql2o.open()) {
       String sql = "UPDATE turns SET user_turn = null";
       con.createQuery(sql).executeUpdate();
@@ -78,6 +78,7 @@ public class Turn {
   }
 
   public void update(String user_guess) {
+    this.user_turn = user_guess;
     try(Connection con = DB.sql2o.open()) {
       String sql = "UPDATE turns SET user_turn = :user_guess WHERE id = :id";
       con.createQuery(sql).addParameter("id", id).addParameter("user_guess", user_guess).executeUpdate();
