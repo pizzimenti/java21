@@ -21,6 +21,13 @@ public class Game {
     return letter;
   }
 
+  public boolean applyGuess(String letters) {
+    if (letters.length() == 0) {
+      throw new IllegalArgumentException("No letter found");
+    }
+    return applyGuess(letters.charAt(0));
+  }
+
   public boolean applyGuess(char letter) {
     letter = validateGuess(letter);
     boolean isHit = mAnswer.indexOf(letter) >= 0;
@@ -33,7 +40,7 @@ public class Game {
     return isHit;
   }
 
-  public String getCurrentProgress () {
+  public String getCurrentProgress() {
     String progress = "";
     for (char letter : mAnswer.toCharArray()) {
       char display = '-';
@@ -49,4 +56,12 @@ public class Game {
   public int getRemainingTries() {
     return MAX_MISSES - mMisses.length();
   }
+
+  public String getAnswer() {
+    return mAnswer;
+  }
+
+  public boolean isSolved() {
+    return getCurrentProgress().indexOf('-') == -1;
+}
 }
